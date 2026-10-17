@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom"
 import { useState} from "react"
 import Task from "../Task"
+import { FiCalendar, FiChevronDown, FiClipboard, FiPlus, FiSliders } from "react-icons/fi"
 
 export default function TasksList() {
     const [tasks, setTasks] = useState(getTasks())
@@ -22,109 +23,87 @@ export default function TasksList() {
     }
 
     return (
-        <>
-            <h1 className="text-3xl font-bold">Tasks</h1>
-
-            {/* categories */}
-            <div className="w-full flex flex-row gap-4 py-6">
-
-                <button 
-                className="font-mono font-semibold cursor-pointer py-2 px-4 rounded bg-blue-500"
-                >
-                Assigned Taks
-                </button>
-                <button 
-                className="font-mono font-semibold cursor-pointer py-2 px-4 rounded bg-blue-500"
-                >
-                Accepted Tasks
-                </button>
-                <button 
-                className="font-mono font-semibold cursor-pointer py-2 px-4 rounded bg-blue-500"
-                >
-                Review Tasks
-                </button>
-                
-            </div>
-
-
-            {/* filter */}
-            <div className="w-full flex flex-row py-6 justify-between">
-                
-                <div className="flex gap-4">
-                <input 
-                    name="task_date" 
-                    id="task_date" 
-                    type="date" 
-                    className="border rounded py-2 px-4"
-                />
-                <select 
-                    name="task_status" 
-                    id="status"
-                    className="border rounded py-2 px-4"
-                >
-                    <option value="complete">Complete</option>
-                    <option value="pending">Pending</option>
-                    <option value="canceled">Canceled</option>
-                </select>
-
-
-                <button
-                    className="font-mono font-semibold cursor-pointer py-2 px-4 rounded bg-blue-500"
-                >
-                    Filter
-                </button>
-                </div>
-
+        <section>
+            <div className="mb-[27px] flex items-center justify-between gap-6 max-[480px]:flex-col max-[480px]:items-stretch max-[480px]:gap-4">
                 <div>
-                <button
-                    className="font-mono font-semibold cursor-pointer py-2 px-4 rounded bg-blue-500"
-                >
-                    <Link to="/create">Create New Task</Link>
-                    
-                </button>
+                    <p className="mb-2 text-[0.68rem] font-bold tracking-[0.12em] text-[var(--primary)]">OVERVIEW</p>
+                    <h1 className="m-0 text-[clamp(1.7rem,2.6vw,2.05rem)] font-bold tracking-[-0.045em] text-[var(--ink)]">Minhas tarefas</h1>
+                    <p className="mt-2 text-[0.91rem] text-[var(--muted)]">Acompanhe e organize o que precisa ser feito.</p>
                 </div>
+                <Link to="/create" className="inline-flex min-h-[42px] items-center justify-center gap-[9px] rounded-lg bg-[var(--primary)] px-4 text-[0.86rem] font-semibold text-white transition-colors hover:bg-[var(--primary-dark)] max-[480px]:w-full">
+                    <FiPlus /> Nova tarefa
+                </Link>
             </div>
 
+            <div className="mb-6 grid grid-cols-3 gap-[17px] max-[760px]:gap-[9px] max-[480px]:grid-cols-1">
+                <article className="grid min-h-32 content-center gap-[7px] rounded-[11px] border border-[var(--line)] bg-white px-[21px] py-[18px] shadow-[0_2px_7px_rgb(20_29_54_/_2%)] max-[760px]:min-h-[108px] max-[760px]:px-3 max-[760px]:py-[14px] max-[480px]:min-h-[94px]">
+                    <span className="text-[0.81rem] font-medium text-[#687389] max-[760px]:text-[0.72rem]">Total de tarefas</span>
+                    <strong className="text-[1.8rem] leading-none font-bold tracking-[-0.05em] text-[var(--ink)] max-[760px]:text-[1.55rem]">{tasks.length}</strong>
+                    <span className="text-[0.76rem] text-[#9aa2b2] max-[760px]:text-[0.67rem]">tarefas cadastradas</span>
+                </article>
+                <article className="grid min-h-32 content-center gap-[7px] rounded-[11px] border border-[var(--line)] bg-white px-[21px] py-[18px] shadow-[0_2px_7px_rgb(20_29_54_/_2%)] max-[760px]:min-h-[108px] max-[760px]:px-3 max-[760px]:py-[14px] max-[480px]:min-h-[94px]">
+                    <span className="text-[0.81rem] font-medium text-[#687389] max-[760px]:text-[0.72rem]">Em andamento</span>
+                    <strong className="text-[1.8rem] leading-none font-bold tracking-[-0.05em] text-[var(--ink)] max-[760px]:text-[1.55rem]">{tasks.filter((task) => task.status === "pending").length}</strong>
+                    <span className="text-[0.76rem] text-[#9aa2b2] max-[760px]:text-[0.67rem]">aguardando conclusão</span>
+                </article>
+                <article className="grid min-h-32 content-center gap-[7px] rounded-[11px] border border-[var(--line)] bg-white px-[21px] py-[18px] shadow-[0_2px_7px_rgb(20_29_54_/_2%)] max-[760px]:min-h-[108px] max-[760px]:px-3 max-[760px]:py-[14px] max-[480px]:min-h-[94px]">
+                    <span className="text-[0.81rem] font-medium text-[#687389] max-[760px]:text-[0.72rem]">Prioridade alta</span>
+                    <strong className="text-[1.8rem] leading-none font-bold tracking-[-0.05em] text-[var(--ink)] max-[760px]:text-[1.55rem]">{tasks.filter((task) => task.priority === "alta").length}</strong>
+                    <span className="text-[0.76rem] text-[#9aa2b2] max-[760px]:text-[0.67rem]">precisam de atenção</span>
+                </article>
+            </div>
 
-            {/* tasks list container*/}
-            <div className="grow">
-                {/* task list */}
-
-                {/* task list header */}
-                <div className="w-full grid grid-cols-7 gap-4 py-4 px-8 bg-[#ddd]">
+            <div className="overflow-hidden rounded-[11px] border border-[var(--line)] bg-white shadow-[0_2px_7px_rgb(20_29_54_/_2%)]">
+                <div className="flex min-h-[94px] items-center justify-between gap-5 border-b border-[var(--line)] px-[22px] py-[19px] max-[760px]:items-start max-[760px]:flex-col">
                     <div>
-                        <p className="font-mono font-semibold">Title</p>
+                        <h2 className="m-0 text-base font-semibold text-[var(--ink)]">Todas as tarefas</h2>
+                        <p className="mt-1.5 text-[0.8rem] text-[var(--muted)]">Visualize os detalhes e gerencie suas tarefas.</p>
                     </div>
-
-                    <div className="font-mono font-semibold">
-                        <p>Priority</p>
-                    </div>
-
-                    <div className="font-mono font-semibold">
-                        <p>Status</p>
-                    </div>
-
-                    <div className="font-mono font-semibold">
-                        <p>Created By</p>
-                    </div>
-
-                    <div className="font-mono font-semibold">
-                        <p>Date Assigned</p>
-                    </div>
-                    
-                    <div className="font-mono font-semibold">
-                        <p>Due Date</p>
-                    </div>
-
-                    <div className="font-mono font-semibold">
-                        <p>Actions</p>
+                    <div className="flex gap-2.5 max-[760px]:w-full">
+                        <label className="flex h-[38px] items-center gap-2 rounded-[7px] border border-[#e4e6ed] px-[10px] text-[#8992a4] max-[760px]:flex-1" htmlFor="task_date">
+                            <FiCalendar className="shrink-0" />
+                            <input className="w-[132px] min-w-0 border-0 bg-transparent text-[0.78rem] text-[#626d82] outline-none max-[760px]:w-full" name="task_date" id="task_date" type="date" aria-label="Filtrar por data" />
+                        </label>
+                        <label className="flex h-[38px] items-center gap-2 rounded-[7px] border border-[#e4e6ed] px-[10px] text-[#8992a4] max-[760px]:flex-1" htmlFor="status">
+                            <FiSliders className="shrink-0" />
+                            <select className="w-[124px] min-w-0 appearance-none border-0 bg-transparent text-[0.78rem] text-[#626d82] outline-none max-[760px]:w-full" name="task_status" id="status" defaultValue="all" aria-label="Filtrar por status">
+                                <option value="all">Todos os status</option>
+                                <option value="complete">Concluída</option>
+                                <option value="pending">Pendente</option>
+                                <option value="canceled">Cancelada</option>
+                            </select>
+                            <FiChevronDown className="pointer-events-none shrink-0 text-[13px]" />
+                        </label>
                     </div>
                 </div>
 
-                {tasks.map((task, index)=>{
-                    return <Task task={task} onDelete={deleteTask} key={index} />
-                })}
+                <div className="overflow-x-auto">
+                    {tasks.length > 0 ? (
+                        <div className="min-w-[970px]">
+                            <div className="grid min-h-[47px] grid-cols-[minmax(170px,1.55fr)_minmax(95px,0.8fr)_minmax(105px,0.9fr)_minmax(120px,1fr)_minmax(112px,0.95fr)_minmax(112px,0.95fr)_104px] items-center gap-[15px] bg-[#fafbfc] px-[22px] text-[0.71rem] font-semibold text-[#8992a4]">
+                                <span>Tarefa</span>
+                                <span>Prioridade</span>
+                                <span>Status</span>
+                                <span>Responsável</span>
+                                <span>Criada em</span>
+                                <span>Prazo</span>
+                                <span>Ações</span>
+                            </div>
+                            {tasks.map((task, index) => (
+                                <Task task={task} onDelete={deleteTask} key={index} />
+                            ))}
+                        </div>
+                    ) : (
+                        <div className="flex min-h-[278px] flex-col items-center justify-center p-7 text-center">
+                            <span className="grid size-12 place-items-center rounded-[14px] bg-[#f0efff] text-[21px] text-[var(--primary)]"><FiClipboard /></span>
+                            <h3 className="mt-[15px] text-base font-semibold">Nenhuma tarefa por aqui</h3>
+                            <p className="mt-[7px] mb-4 max-w-[330px] text-[0.82rem] leading-relaxed text-[var(--muted)]">Crie sua primeira tarefa para começar a organizar seu trabalho.</p>
+                            <Link to="/create" className="inline-flex min-h-[42px] items-center justify-center gap-[9px] rounded-lg border border-[#dedfeb] bg-white px-4 text-[0.86rem] font-semibold text-[#454c61] transition-colors hover:border-[#c7c5f3] hover:bg-[#f8f7ff] hover:text-[var(--primary)]"><FiPlus /> Criar tarefa</Link>
+                        </div>
+                    )}
+                </div>
+                {tasks.length > 0 && <div className="border-t border-[var(--line)] px-[22px] py-[13px] text-[0.75rem] text-[#8c95a5]">Exibindo {tasks.length} {tasks.length === 1 ? "tarefa" : "tarefas"}</div>}
             </div>
-        </>
+        </section>
     )
 }

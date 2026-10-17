@@ -16,17 +16,13 @@ export default function TaskForm({taskData, onSubmit}) {
     
     
     return (
-        <form 
-        className="flex flex-col gap-8" 
-        onSubmit={submitForm}
-        >
-
-            <div className="space-y-1">
+        <form className="grid gap-[21px] p-[25px] max-[480px]:p-[19px]" onSubmit={submitForm}>
+            <div className="grid gap-2">
                 <label
                 htmlFor="name"
-                className="block text-sm font-medium text-gray-700"
+                className="text-[0.83rem] font-semibold text-[#3b455b]"
                 >
-                Nome
+                Nome da tarefa <span className="text-[#d85d58]" aria-hidden="true">*</span>
                 </label>
 
                 <input
@@ -35,17 +31,17 @@ export default function TaskForm({taskData, onSubmit}) {
                 placeholder="Ex.: Estudar useEffect"
                 required
                 defaultValue={taskData? taskData.name: ""}
-                className="w-full rounded-lg border border-gray-300
-                    px-3 py-2"
+                className="min-h-[43px] w-full rounded-[7px] border border-[#dfe2e9] bg-white px-3 py-2 text-[0.86rem] text-[#283248] outline-none transition focus:border-[#8583e4] focus:ring-[3px] focus:ring-[#5856d6]/10 placeholder:text-[#a4abba]"
                 />
+                <span className="text-[0.74rem] text-[#919aab]">Use um título claro e objetivo.</span>
             </div>
 
-            <div className="space-y-1">
+            <div className="grid gap-2">
                 <label
                 htmlFor="description"
-                className="block text-sm font-medium text-gray-700"
+                className="text-[0.83rem] font-semibold text-[#3b455b]"
                 >
-                Descrição
+                Descrição <span className="text-[#d85d58]" aria-hidden="true">*</span>
                 </label>
 
                 <textarea
@@ -55,15 +51,14 @@ export default function TaskForm({taskData, onSubmit}) {
                 rows={4}
                 required
                 defaultValue={taskData? taskData.description: ""}
-                className="w-full resize-y rounded-lg border
-                    border-gray-300 px-3 py-2"
+                className="min-h-[125px] w-full resize-y rounded-[7px] border border-[#dfe2e9] bg-white px-3 py-2 text-[0.86rem] leading-relaxed text-[#283248] outline-none transition focus:border-[#8583e4] focus:ring-[3px] focus:ring-[#5856d6]/10 placeholder:text-[#a4abba]"
                 />
             </div>
 
-            <div className="space-y-1">
+            <div className="grid gap-2">
                 <label
                 htmlFor="priority"
-                className="block text-sm font-medium text-gray-700"
+                className="text-[0.83rem] font-semibold text-[#3b455b]"
                 >
                 Prioridade
                 </label>
@@ -72,8 +67,7 @@ export default function TaskForm({taskData, onSubmit}) {
                 id="priority"
                 name="priority"
                 defaultValue={taskData? taskData.priority: "baixa"}
-                className="w-full rounded-lg border border-gray-300
-                    bg-white px-3 py-2"
+                className="min-h-[43px] w-full rounded-[7px] border border-[#dfe2e9] bg-white px-3 py-2 text-[0.86rem] text-[#283248] outline-none transition focus:border-[#8583e4] focus:ring-[3px] focus:ring-[#5856d6]/10"
                 >
                     <option value="baixa">Baixa</option>
                     <option value="media">Média</option>
@@ -81,15 +75,9 @@ export default function TaskForm({taskData, onSubmit}) {
                 </select>
             </div>
 
-            <button
-                type="submit"
-                className="w-full rounded-lg bg-blue-600 px-4 py-2.5
-                font-medium text-white transition
-                hover:bg-blue-700 focus:ring-2
-                focus:ring-blue-300"
-            >
-                Salvar
-            </button>
+            <div className="flex justify-end border-t border-[#f0f1f5] pt-[3px]">
+                <button type="submit" className="mt-[17px] inline-flex min-h-[42px] items-center justify-center gap-[9px] rounded-lg bg-[var(--primary)] px-4 text-[0.86rem] font-semibold text-white transition-colors hover:bg-[var(--primary-dark)]">Salvar tarefa</button>
+            </div>
         </form>
     )
 }

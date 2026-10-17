@@ -1,7 +1,7 @@
 export default function Main({children}) {
     return (
-        <div className="grow flex flex-col ml-64 p-4">
+        <main className="ml-[248px] min-h-screen max-[760px]:ml-0">
             {children}
-        </div>
+        </main>
     )
 }
