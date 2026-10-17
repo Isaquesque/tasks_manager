@@ -1,5 +1,5 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import Base from "./components/Base"
+import Base from "./components/structure/Base"
 import TasksList from "./components/pages/TasksList"
 import TaskCreate from './components/pages/TaskCreate';
 import TaskEdit from "./components/pages/TaskEdit"

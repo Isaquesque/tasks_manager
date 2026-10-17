@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom"
 import { useState} from "react"
-import Task from "../Task"
+import Task from "../layout/Task"
 import { FiCalendar, FiChevronDown, FiClipboard, FiPlus, FiSliders } from "react-icons/fi"
 
 export default function TasksList() {
