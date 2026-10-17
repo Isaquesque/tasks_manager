@@ -1,6 +1,6 @@
 export default function Container({children}) {
     return (
-        <div className="w-full h-screen flex flex-row relative">
+        <div className="min-h-screen">
             {children}
         </div>
     )
