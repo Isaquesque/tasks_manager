@@ -2,20 +2,10 @@ import { useParams } from "react-router-dom"
 import { Link } from "react-router-dom"
 import { FiArrowLeft, FiCalendar, FiEdit2, FiUser } from "react-icons/fi"
 
-export default function TaskDetail() {
+export default function TaskDetail({tasksRepository}) {
     const {id} = useParams()
 
-    function getTasks() {
-        const tasks = localStorage.getItem("tasks")
-
-        if(tasks){
-            return JSON.parse(tasks)
-        }
-        
-        return []
-    }
-
-    const task = getTasks()[id]
+    const task = tasksRepository.getTask(id)
     const formatDate = (value) => new Intl.DateTimeFormat("pt-BR", {
         day: "2-digit",
         month: "long",

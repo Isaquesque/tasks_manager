@@ -57,7 +57,12 @@ export default function Task({task, onDelete}) {
             <div className="flex items-center gap-px">
                 <Link className="inline-grid size-[30px] place-items-center rounded-lg text-[#758096] transition-colors hover:bg-[#f1f2f7] hover:text-[var(--ink)]" to={"/detail/"+task.id} aria-label={`Ver tarefa ${task.name}`}><FiEye /></Link>
                 <Link className="inline-grid size-[30px] place-items-center rounded-lg text-[#758096] transition-colors hover:bg-[#f1f2f7] hover:text-[var(--ink)]" to={"/edit/"+task.id} aria-label={`Editar tarefa ${task.name}`}><FiEdit2 /></Link>
-                <button className="inline-grid size-[30px] place-items-center rounded-lg text-[#758096] transition-colors hover:bg-[#fff0ef] hover:text-[#c6534b]" type="button" onClick={()=>{onDelete(task.id)}} aria-label={`Excluir tarefa ${task.name}`}>
+                <button 
+                className="inline-grid size-[30px] place-items-center rounded-lg text-[#758096] transition-colors hover:bg-[#fff0ef] hover:text-[#c6534b]" 
+                type="button" 
+                onClick={()=>{onDelete(task.id)}} 
+                aria-label={`Excluir tarefa ${task.name}`}
+                >
                     <FiTrash/>
                 </button>
             </div>

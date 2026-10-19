@@ -2,22 +2,11 @@ import TaskForm from "../layout/TaskForm";
 import { Link } from "react-router-dom";
 import { FiArrowLeft } from "react-icons/fi";
 
-export default function TaskCreate() {
-  function getTasks() {
-    const tasks = localStorage.getItem("tasks");
-
-    if (tasks) {
-      return JSON.parse(tasks);
-    }
-
-    return [];
-  }
+export default function TaskCreate({tasksRepository}) {
 
   function createTask(taskData) {
-    const tasks = getTasks();
-
+    
     const task = {
-      id: tasks.length,
       name: taskData.name,
       description: taskData.description,
       priority: taskData.priority,
@@ -27,9 +16,7 @@ export default function TaskCreate() {
       dueDate: new Date(),
     };
 
-    tasks.push(task);
-
-    localStorage.setItem("tasks", JSON.stringify(tasks));
+    tasksRepository.addTask(task)
   }
 
   return (
