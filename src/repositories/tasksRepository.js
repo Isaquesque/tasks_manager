@@ -1,4 +1,4 @@
-import {taskModelToStorage, storageToTaskModel} from "../mappers/taskMapper"
+import {TaskMapper} from "../mappers/taskMapper"
 
 class TasksRepository{
     constructor() {
@@ -30,7 +30,7 @@ class TasksRepository{
         keys.push(newKey)
         
         taskModel.id = newKey
-        const storageTask = taskModelToStorage(taskModel)
+        const storageTask = TaskMapper.toStorageFormat(taskModel)
         
 
         localStorage.setItem("keys", JSON.stringify(keys))
@@ -46,7 +46,7 @@ class TasksRepository{
     }
 
     updateTask(taskModel){
-        const storageTask = taskModelToStorage(taskModel)
+        const storageTask = TaskMapper.toStorageFormat(taskModel)
 
         localStorage.setItem(String(storageTask.id), JSON.stringify(storageTask))
     }
@@ -54,7 +54,7 @@ class TasksRepository{
     getTask(taskId){
         const strStorageTask = localStorage.getItem(String(taskId))
         const storageTask = JSON.parse(strStorageTask)
-        return storageToTaskModel(storageTask)
+        return TaskMapper.fromStorageFormat(storageTask)
     }
 
     getTasks(){

@@ -1,12 +1,12 @@
 import { useParams } from "react-router-dom"
 import { Link } from "react-router-dom"
 import { FiArrowLeft, FiCalendar, FiEdit2, FiUser } from "react-icons/fi"
-import {taskModelToView} from "../../mappers/taskMapper"
+import {TaskMapper} from "../../mappers/taskMapper"
 
 export default function TaskDetail({tasksRepository}) {
     const {id} = useParams()
 
-    const task = taskModelToView(tasksRepository.getTask(id))
+    const task = TaskMapper.toTaskViewFormat(tasksRepository.getTask(id))
 
     return (
         <section className="mx-auto max-w-[920px]">

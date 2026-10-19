@@ -1,19 +1,20 @@
 import TaskForm from "../layout/TaskForm";
 import { Link } from "react-router-dom";
 import { FiArrowLeft } from "react-icons/fi";
+import {DateMapper} from "../../mappers/dateMapper"
 
 export default function TaskCreate({tasksRepository}) {
 
   function createTask(taskData) {
     
     const task = {
-      title: taskData.name,
+      title: taskData.title,
       description: taskData.description,
       priority: taskData.priority,
       status: "P",
       author: "isaque",
       creationDate: new Date(),
-      dueDate: new Date(),
+      dueDate: DateMapper.fromDateInputFormat(taskData.dueDate),
     };
 
     tasksRepository.addTask(task)

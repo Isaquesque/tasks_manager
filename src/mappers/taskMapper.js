@@ -1,4 +1,5 @@
 import Task from "../models/taskModel"
+import { DateMapper } from "./dateMapper";
 
 const PRIORITY_TO_VIEW = {
     "L": "Baixa",
@@ -12,34 +13,7 @@ const STATUS_TO_VIEW = {
     "C": "Cancelada"
 }
 
-function _dateToStorage(date) {
-    const strDay = String(date.getDate()).padStart(2, "0")
-    const strMonth = String(date.getMonth()).padStart(2, "0")
-    const strYear = String(date.getFullYear())
-
-
-    return strDay+strMonth+strYear
-}
-
-function _storageToDate(storageDate) {
-
-    const strDay = storageDate.substring(0, 2)
-    const strMonth = storageDate.substring(2, 4)
-    const strYear = storageDate.substring(4, 8)
-
-    return new Date(strYear, strMonth, strDay)
-}
-
-function _dateToView(date) {
-    const strDay = String(date.getDate()).padStart(2, "0")
-    const strMonth = String(date.getMonth() + 1).padStart(2, "0")
-    const strYear = String(date.getFullYear())
-
-
-    return strDay+"/"+strMonth+"/"+strYear
-}
-
-export function taskModelToStorage(taskModel) {
+function toStorageFormat(taskModel) {
   return {
     id: taskModel.id,
     title: taskModel.title,
@@ -47,12 +21,12 @@ export function taskModelToStorage(taskModel) {
     priority: taskModel.priority,
     status: taskModel.status,
     author: taskModel.author,
-    creationDate: _dateToStorage(taskModel.creationDate),
-    dueDate: _dateToStorage(taskModel.dueDate)
+    creationDate: DateMapper.toStorageFormat(taskModel.creationDate),
+    dueDate: DateMapper.toStorageFormat(taskModel.dueDate)
   };
 }
 
-export function storageToTaskModel(taskData) {
+function fromStorageFormat(taskData) {
 
   return new Task(
     taskData.id,
@@ -61,13 +35,13 @@ export function storageToTaskModel(taskData) {
     taskData.priority,
     taskData.status,
     taskData.author,
-    _storageToDate(taskData.creationDate),
-    _storageToDate(taskData.dueDate)
+    DateMapper.fromStorageFormat(taskData.creationDate),
+    DateMapper.fromStorageFormat(taskData.dueDate)
   )
   
 }
 
-export function taskModelToView(taskModel) {
+function toTaskViewFormat(taskModel) {
   return {
     id: taskModel.id,
     title: taskModel.title,
@@ -75,7 +49,13 @@ export function taskModelToView(taskModel) {
     priority: PRIORITY_TO_VIEW[taskModel.priority],
     status: STATUS_TO_VIEW[taskModel.status],
     author: taskModel.author,
-    creationDate: _dateToView(taskModel.creationDate),
-    dueDate: _dateToView(taskModel.dueDate)
+    creationDate: DateMapper.toDateViewFormat(taskModel.creationDate),
+    dueDate: DateMapper.toDateViewFormat(taskModel.dueDate)
   };
+}
+
+export const TaskMapper = {
+  toStorageFormat: toStorageFormat,
+  fromStorageFormat: fromStorageFormat,
+  toTaskViewFormat: toTaskViewFormat
 }
