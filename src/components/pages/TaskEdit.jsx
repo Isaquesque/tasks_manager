@@ -2,6 +2,7 @@ import TaskForm from "../layout/TaskForm";
 import { useParams } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { FiArrowLeft } from "react-icons/fi";
+import {DateMapper} from "../../mappers/dateMapper"
 
 export default function TaskEdit({tasksRepository}) {
   const { id } = useParams();
@@ -11,14 +12,16 @@ export default function TaskEdit({tasksRepository}) {
 
     const updatedTask = {
       id: id,
-      name: newTaskData.name ? newTaskData.name : taskData.name,
+      title: newTaskData.title ? newTaskData.title : taskData.title,
       description: newTaskData.description ? newTaskData.description : taskData.description,
       priority: newTaskData.priority ? newTaskData.priority : taskData.priority,
       status: "P",
       author: "isaque",
       creationDate: taskData.creationDate,
-      dueDate: taskData.dueDate,
+      dueDate: newTaskData.dueDate? DateMapper.fromDateInputFormat(newTaskData.dueDate): taskData.dueDate,
     };
+    
+    
 
     tasksRepository.updateTask(updatedTask)
   }

@@ -4,6 +4,7 @@ import Select from "../form/Select";
 import Label from "../form/Label";
 import SubmitButton from "../form/SubmitButton";
 import FormGroup from "../form/FormGroup";
+import DateInput from "../form/DateInput"
 
 export default function TaskForm({ taskData, onSubmit }) {
   function submitForm(e) {
@@ -12,9 +13,10 @@ export default function TaskForm({ taskData, onSubmit }) {
     const form = e.target;
 
     const taskData = {
-      name: form["name"].value,
+      title: form["name"].value,
       description: form["description"].value,
       priority: form["priority"].value,
+      dueDate: form["duedate"].value
     };
 
     onSubmit(taskData);
@@ -82,6 +84,17 @@ export default function TaskForm({ taskData, onSubmit }) {
             },
           ]}
         />
+      </FormGroup>
+
+      <FormGroup>
+        <Label id={"priority"}>Data limite</Label>
+        <DateInput
+          name={"duedate"}
+          id={"duedate"}
+          type={"date"}
+          defaultValue={taskData ? taskData.dueDate : ""}
+          required={true}
+          />
       </FormGroup>
 
       <div className="flex justify-end border-t border-[#f0f1f5] pt-[3px]">

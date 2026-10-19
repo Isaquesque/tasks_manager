@@ -2,7 +2,7 @@ import { Link } from "react-router-dom"
 import { useState} from "react"
 import Task from "../layout/Task"
 import { FiCalendar, FiChevronDown, FiClipboard, FiPlus, FiSliders } from "react-icons/fi"
-import {taskModelToView} from "../../mappers/taskMapper"
+import {TaskMapper} from "../../mappers/taskMapper"
 
 export default function TasksList({tasksRepository}) {
     const [tasks, setTasks] = useState(tasksRepository.getTasks())
@@ -81,8 +81,7 @@ export default function TasksList({tasksRepository}) {
                                 <span>Ações</span>
                             </div>
                             {tasks.map((task, index) => {
-                                const taskView = taskModelToView(task)
-                                console.log(taskView)
+                                const taskView = TaskMapper.toTaskViewFormat(task)
                                 return <Task task={taskView} onDelete={deleteTask} key={index} />
                             })}
                         </div>
