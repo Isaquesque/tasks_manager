@@ -1,3 +1,5 @@
+import {taskModelToStorage, storageToTaskModel} from "../mappers/taskMapper"
+
 class TasksRepository{
     constructor() {
         const strKeys = localStorage.getItem("keys")
@@ -5,13 +7,6 @@ class TasksRepository{
         if(!strKeys){
             const keys = []
             localStorage.setItem("keys", JSON.stringify(keys))
-        }
-
-        const strTasks = localStorage.getItem("tasks")
-
-        if(!strTasks){
-            const tasks = []
-            localStorage.setItem("tasks", JSON.stringify(tasks))
         }
     }
 
@@ -29,15 +24,17 @@ class TasksRepository{
         return keys[keys.length-1] + 1
     }
     
-    addTask(taskData){
+    addTask(taskModel){
         const keys = this._getKeys()
         const newKey = this._createId()
-        
         keys.push(newKey)
-        taskData.id = newKey
+        
+        taskModel.id = newKey
+        const storageTask = taskModelToStorage(taskModel)
+        
 
         localStorage.setItem("keys", JSON.stringify(keys))
-        localStorage.setItem(String(taskData.id), JSON.stringify(taskData))
+        localStorage.setItem(String(storageTask.id), JSON.stringify(storageTask))
     }
 
     deleteTask(taskId){
@@ -48,13 +45,16 @@ class TasksRepository{
         localStorage.setItem("keys", JSON.stringify(newKeys))
     }
 
-    updateTask(taskData){
-        localStorage.setItem(String(taskData.id), JSON.stringify(taskData))
+    updateTask(taskModel){
+        const storageTask = taskModelToStorage(taskModel)
+
+        localStorage.setItem(String(storageTask.id), JSON.stringify(storageTask))
     }
 
     getTask(taskId){
-        const strTask = localStorage.getItem(String(taskId))
-        return JSON.parse(strTask)
+        const strStorageTask = localStorage.getItem(String(taskId))
+        const storageTask = JSON.parse(strStorageTask)
+        return storageToTaskModel(storageTask)
     }
 
     getTasks(){

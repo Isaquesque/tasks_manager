@@ -14,7 +14,7 @@ export default function TaskEdit({tasksRepository}) {
       name: newTaskData.name ? newTaskData.name : taskData.name,
       description: newTaskData.description ? newTaskData.description : taskData.description,
       priority: newTaskData.priority ? newTaskData.priority : taskData.priority,
-      status: "pending",
+      status: "P",
       author: "isaque",
       creationDate: taskData.creationDate,
       dueDate: taskData.dueDate,

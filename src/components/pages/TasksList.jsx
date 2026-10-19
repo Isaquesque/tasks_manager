@@ -2,6 +2,7 @@ import { Link } from "react-router-dom"
 import { useState} from "react"
 import Task from "../layout/Task"
 import { FiCalendar, FiChevronDown, FiClipboard, FiPlus, FiSliders } from "react-icons/fi"
+import {taskModelToView} from "../../mappers/taskMapper"
 
 export default function TasksList({tasksRepository}) {
     const [tasks, setTasks] = useState(tasksRepository.getTasks())
@@ -33,12 +34,12 @@ export default function TasksList({tasksRepository}) {
                 </article>
                 <article className="grid min-h-32 content-center gap-[7px] rounded-[11px] border border-[var(--line)] bg-white px-[21px] py-[18px] shadow-[0_2px_7px_rgb(20_29_54_/_2%)] max-[760px]:min-h-[108px] max-[760px]:px-3 max-[760px]:py-[14px] max-[480px]:min-h-[94px]">
                     <span className="text-[0.81rem] font-medium text-[#687389] max-[760px]:text-[0.72rem]">Em andamento</span>
-                    <strong className="text-[1.8rem] leading-none font-bold tracking-[-0.05em] text-[var(--ink)] max-[760px]:text-[1.55rem]">{tasks.filter((task) => task.status === "pending").length}</strong>
+                    <strong className="text-[1.8rem] leading-none font-bold tracking-[-0.05em] text-[var(--ink)] max-[760px]:text-[1.55rem]">{tasks.filter((task) => task.status === "P").length}</strong>
                     <span className="text-[0.76rem] text-[#9aa2b2] max-[760px]:text-[0.67rem]">aguardando conclusão</span>
                 </article>
                 <article className="grid min-h-32 content-center gap-[7px] rounded-[11px] border border-[var(--line)] bg-white px-[21px] py-[18px] shadow-[0_2px_7px_rgb(20_29_54_/_2%)] max-[760px]:min-h-[108px] max-[760px]:px-3 max-[760px]:py-[14px] max-[480px]:min-h-[94px]">
                     <span className="text-[0.81rem] font-medium text-[#687389] max-[760px]:text-[0.72rem]">Prioridade alta</span>
-                    <strong className="text-[1.8rem] leading-none font-bold tracking-[-0.05em] text-[var(--ink)] max-[760px]:text-[1.55rem]">{tasks.filter((task) => task.priority === "alta").length}</strong>
+                    <strong className="text-[1.8rem] leading-none font-bold tracking-[-0.05em] text-[var(--ink)] max-[760px]:text-[1.55rem]">{tasks.filter((task) => task.priority === "H").length}</strong>
                     <span className="text-[0.76rem] text-[#9aa2b2] max-[760px]:text-[0.67rem]">precisam de atenção</span>
                 </article>
             </div>
@@ -79,9 +80,11 @@ export default function TasksList({tasksRepository}) {
                                 <span>Prazo</span>
                                 <span>Ações</span>
                             </div>
-                            {tasks.map((task, index) => (
-                                <Task task={task} onDelete={deleteTask} key={index} />
-                            ))}
+                            {tasks.map((task, index) => {
+                                const taskView = taskModelToView(task)
+                                console.log(taskView)
+                                return <Task task={taskView} onDelete={deleteTask} key={index} />
+                            })}
                         </div>
                     ) : (
                         <div className="flex min-h-[278px] flex-col items-center justify-center p-7 text-center">
