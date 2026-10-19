@@ -1,16 +1,12 @@
 import { useParams } from "react-router-dom"
 import { Link } from "react-router-dom"
 import { FiArrowLeft, FiCalendar, FiEdit2, FiUser } from "react-icons/fi"
+import {taskModelToView} from "../../mappers/taskMapper"
 
 export default function TaskDetail({tasksRepository}) {
     const {id} = useParams()
 
-    const task = tasksRepository.getTask(id)
-    const formatDate = (value) => new Intl.DateTimeFormat("pt-BR", {
-        day: "2-digit",
-        month: "long",
-        year: "numeric"
-    }).format(new Date(value))
+    const task = taskModelToView(tasksRepository.getTask(id))
 
     return (
         <section className="mx-auto max-w-[920px]">
@@ -35,11 +31,11 @@ export default function TaskDetail({tasksRepository}) {
                     </div>
                     <div className="flex items-center gap-3">
                         <span className="grid size-[37px] shrink-0 place-items-center rounded-[10px] bg-[#f3f3fa] text-[#6e6cbd]"><FiCalendar /></span>
-                        <div className="grid gap-[5px]"><span className="text-[0.74rem] text-[#8b94a5]">Criada em</span><strong className="text-[0.84rem] font-semibold text-[#354056]">{formatDate(task.creationDate)}</strong></div>
+                        <div className="grid gap-[5px]"><span className="text-[0.74rem] text-[#8b94a5]">Criada em</span><strong className="text-[0.84rem] font-semibold text-[#354056]">{task.creationDate}</strong></div>
                     </div>
                     <div className="flex items-center gap-3">
                         <span className="grid size-[37px] shrink-0 place-items-center rounded-[10px] bg-[#f3f3fa] text-[#6e6cbd]"><FiCalendar /></span>
-                        <div className="grid gap-[5px]"><span className="text-[0.74rem] text-[#8b94a5]">Prazo</span><strong className="text-[0.84rem] font-semibold text-[#354056]">{formatDate(task.dueDate)}</strong></div>
+                        <div className="grid gap-[5px]"><span className="text-[0.74rem] text-[#8b94a5]">Prazo</span><strong className="text-[0.84rem] font-semibold text-[#354056]">{task.dueDate}</strong></div>
                     </div>
                     <div className="flex items-center gap-3">
                         <span className="grid size-[37px] shrink-0 place-items-center rounded-[10px] bg-[#f3f3fa] text-[#6e6cbd]"><FiEdit2 /></span>

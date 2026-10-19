@@ -37,7 +37,7 @@ export default function TaskForm({ taskData, onSubmit }) {
           id={"name"}
           placeholder={"Ex.: Tarefa X"}
           required={true}
-          defaultValue={taskData ? taskData.name : ""}
+          defaultValue={taskData ? taskData.title : ""}
         />
         <span className="text-[0.74rem] text-[#919aab]">
           Use um título claro e objetivo.
@@ -69,15 +69,15 @@ export default function TaskForm({ taskData, onSubmit }) {
           defaultValue={taskData ? taskData.priority : "baixa"}
           options={[
             {
-              value: "alta",
+              value: "H",
               readableValue: "Alta",
             },
             {
-              value: "media",
+              value: "M",
               readableValue: "Média",
             },
             {
-              value: "baixa",
+              value: "L",
               readableValue: "Baixa",
             },
           ]}

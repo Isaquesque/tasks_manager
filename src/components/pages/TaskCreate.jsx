@@ -7,10 +7,10 @@ export default function TaskCreate({tasksRepository}) {
   function createTask(taskData) {
     
     const task = {
-      name: taskData.name,
+      title: taskData.name,
       description: taskData.description,
       priority: taskData.priority,
-      status: "pending",
+      status: "P",
       author: "isaque",
       creationDate: new Date(),
       dueDate: new Date(),
