@@ -3,36 +3,24 @@ import { useParams } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { FiArrowLeft } from "react-icons/fi";
 
-export default function TaskEdit() {
+export default function TaskEdit({tasksRepository}) {
   const { id } = useParams();
-  const taskData = getTasks()[id];
-
-  function getTasks() {
-    const tasks = localStorage.getItem("tasks");
-
-    if (tasks) {
-      return JSON.parse(tasks);
-    }
-
-    return [];
-  }
+  const taskData = tasksRepository.getTask(id)
 
   function editTask(newTaskData) {
+
     const updatedTask = {
       id: id,
-      name: newTaskData ? newTaskData.name : taskData.name,
-      description: newTaskData ? newTaskData.description : taskData.description,
-      priority: newTaskData ? newTaskData.priority : taskData.priority,
+      name: newTaskData.name ? newTaskData.name : taskData.name,
+      description: newTaskData.description ? newTaskData.description : taskData.description,
+      priority: newTaskData.priority ? newTaskData.priority : taskData.priority,
       status: "pending",
       author: "isaque",
       creationDate: taskData.creationDate,
       dueDate: taskData.dueDate,
     };
 
-    const tasks = getTasks();
-    tasks[id] = updatedTask;
-
-    localStorage.setItem("tasks", JSON.stringify(tasks));
+    tasksRepository.updateTask(updatedTask)
   }
 
   return (

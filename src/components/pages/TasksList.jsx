@@ -3,23 +3,13 @@ import { useState} from "react"
 import Task from "../layout/Task"
 import { FiCalendar, FiChevronDown, FiClipboard, FiPlus, FiSliders } from "react-icons/fi"
 
-export default function TasksList() {
-    const [tasks, setTasks] = useState(getTasks())
+export default function TasksList({tasksRepository}) {
+    const [tasks, setTasks] = useState(tasksRepository.getTasks())
 
-    function getTasks() {
-        const tasks = localStorage.getItem("tasks")
+    function deleteTask(taskId) {
+        tasksRepository.deleteTask(taskId)
 
-        if(tasks){
-            return JSON.parse(tasks)
-        }
-        
-        return []
-    }
-
-    function deleteTask(id) {
-        const newTasks = tasks.filter((t)=> t.id !== id)
-        localStorage.setItem("tasks", JSON.stringify(newTasks))
-        setTasks(newTasks)
+        setTasks(tasksRepository.getTasks())
     }
 
     return (
