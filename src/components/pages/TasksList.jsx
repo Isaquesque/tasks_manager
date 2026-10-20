@@ -1,16 +1,39 @@
 import { Link } from "react-router-dom"
 import { useState} from "react"
 import Task from "../layout/Task"
-import { FiCalendar, FiChevronDown, FiClipboard, FiPlus, FiSliders } from "react-icons/fi"
+import FilterForm from "../layout/FilterForm"
+import { FiClipboard, FiPlus } from "react-icons/fi"
 import {TaskMapper} from "../../mappers/taskMapper"
+import { DateMapper } from "../../mappers/dateMapper"
+
+const EMPTY_FILTERS = {
+    title: "",
+    priority: "all",
+    dueDate: "",
+    status: "all",
+}
 
 export default function TasksList({tasksRepository}) {
     const [tasks, setTasks] = useState(tasksRepository.getTasks())
+    const [filters, setFilters] = useState(EMPTY_FILTERS)
+
+    const filteredTasks = tasks.filter((task) => {
+        const matchesTitle = task.title.toLowerCase().includes(filters.title.trim().toLowerCase())
+        const matchesPriority = filters.priority === "all" || task.priority === filters.priority
+        const matchesDueDate = !filters.dueDate || DateMapper.toDateInputFormat(task.dueDate) === filters.dueDate
+        const matchesStatus = filters.status === "all" || task.status === filters.status
+
+        return matchesTitle && matchesPriority && matchesDueDate && matchesStatus
+    })
 
     function deleteTask(taskId) {
         tasksRepository.deleteTask(taskId)
 
         setTasks(tasksRepository.getTasks())
+    }
+
+    function resetFilters() {
+        setFilters({ ...EMPTY_FILTERS })
     }
 
     return (
@@ -44,32 +67,16 @@ export default function TasksList({tasksRepository}) {
                 </article>
             </div>
 
-            <div className="overflow-hidden rounded-[11px] border border-[var(--line)] bg-white shadow-[0_2px_7px_rgb(20_29_54_/_2%)]">
-                <div className="flex min-h-[94px] items-center justify-between gap-5 border-b border-[var(--line)] px-[22px] py-[19px] max-[760px]:items-start max-[760px]:flex-col">
-                    <div>
+            <div className="grid grid-cols-1 items-start gap-5">
+                <FilterForm filters={filters} onChange={setFilters} onReset={resetFilters} />
+                <div className="min-w-0 overflow-hidden rounded-[11px] border border-[var(--line)] bg-white shadow-[0_2px_7px_rgb(20_29_54_/_2%)]">
+                    <div className="min-h-[94px] border-b border-[var(--line)] px-[22px] py-[19px]">
                         <h2 className="m-0 text-base font-semibold text-[var(--ink)]">Todas as tarefas</h2>
                         <p className="mt-1.5 text-[0.8rem] text-[var(--muted)]">Visualize os detalhes e gerencie suas tarefas.</p>
                     </div>
-                    <div className="flex gap-2.5 max-[760px]:w-full">
-                        <label className="flex h-[38px] items-center gap-2 rounded-[7px] border border-[#e4e6ed] px-[10px] text-[#8992a4] max-[760px]:flex-1" htmlFor="task_date">
-                            <FiCalendar className="shrink-0" />
-                            <input className="w-[132px] min-w-0 border-0 bg-transparent text-[0.78rem] text-[#626d82] outline-none max-[760px]:w-full" name="task_date" id="task_date" type="date" aria-label="Filtrar por data" />
-                        </label>
-                        <label className="flex h-[38px] items-center gap-2 rounded-[7px] border border-[#e4e6ed] px-[10px] text-[#8992a4] max-[760px]:flex-1" htmlFor="status">
-                            <FiSliders className="shrink-0" />
-                            <select className="w-[124px] min-w-0 appearance-none border-0 bg-transparent text-[0.78rem] text-[#626d82] outline-none max-[760px]:w-full" name="task_status" id="status" defaultValue="all" aria-label="Filtrar por status">
-                                <option value="all">Todos os status</option>
-                                <option value="complete">Concluída</option>
-                                <option value="pending">Pendente</option>
-                                <option value="canceled">Cancelada</option>
-                            </select>
-                            <FiChevronDown className="pointer-events-none shrink-0 text-[13px]" />
-                        </label>
-                    </div>
-                </div>
 
-                <div className="overflow-x-auto">
-                    {tasks.length > 0 ? (
+                    <div className="overflow-x-auto">
+                    {filteredTasks.length > 0 ? (
                         <div className="min-w-[970px]">
                             <div className="grid min-h-[47px] grid-cols-[minmax(170px,1.55fr)_minmax(95px,0.8fr)_minmax(105px,0.9fr)_minmax(120px,1fr)_minmax(112px,0.95fr)_minmax(112px,0.95fr)_104px] items-center gap-[15px] bg-[#fafbfc] px-[22px] text-[0.71rem] font-semibold text-[#8992a4]">
                                 <span>Tarefa</span>
@@ -80,10 +87,16 @@ export default function TasksList({tasksRepository}) {
                                 <span>Prazo</span>
                                 <span>Ações</span>
                             </div>
-                            {tasks.map((task, index) => {
+                            {filteredTasks.map((task) => {
                                 const taskView = TaskMapper.toTaskViewFormat(task)
-                                return <Task task={taskView} onDelete={deleteTask} key={index} />
+                                return <Task task={taskView} onDelete={deleteTask} key={task.id} />
                             })}
+                        </div>
+                    ) : tasks.length > 0 ? (
+                        <div className="flex min-h-[278px] flex-col items-center justify-center p-7 text-center">
+                            <span className="grid size-12 place-items-center rounded-[14px] bg-[#f0efff] text-[21px] text-[var(--primary)]"><FiClipboard /></span>
+                            <h3 className="mt-[15px] text-base font-semibold">Nenhuma tarefa encontrada</h3>
+                            <p className="mt-[7px] max-w-[330px] text-[0.82rem] leading-relaxed text-[var(--muted)]">Tente ajustar ou limpar os filtros para ver mais tarefas.</p>
                         </div>
                     ) : (
                         <div className="flex min-h-[278px] flex-col items-center justify-center p-7 text-center">
@@ -93,8 +106,9 @@ export default function TasksList({tasksRepository}) {
                             <Link to="/create" className="inline-flex min-h-[42px] items-center justify-center gap-[9px] rounded-lg border border-[#dedfeb] bg-white px-4 text-[0.86rem] font-semibold text-[#454c61] transition-colors hover:border-[#c7c5f3] hover:bg-[#f8f7ff] hover:text-[var(--primary)]"><FiPlus /> Criar tarefa</Link>
                         </div>
                     )}
+                    </div>
+                    {filteredTasks.length > 0 && <div className="border-t border-[var(--line)] px-[22px] py-[13px] text-[0.75rem] text-[#8c95a5]">Exibindo {filteredTasks.length} {filteredTasks.length === 1 ? "tarefa" : "tarefas"}</div>}
                 </div>
-                {tasks.length > 0 && <div className="border-t border-[var(--line)] px-[22px] py-[13px] text-[0.75rem] text-[#8c95a5]">Exibindo {tasks.length} {tasks.length === 1 ? "tarefa" : "tarefas"}</div>}
             </div>
         </section>
     )
