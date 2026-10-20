@@ -26,14 +26,26 @@ export default function TasksList({tasksRepository}) {
         return matchesTitle && matchesPriority && matchesDueDate && matchesStatus
     })
 
+    function resetFilters() {
+        setFilters({ ...EMPTY_FILTERS })
+    }
+
     function deleteTask(taskId) {
         tasksRepository.deleteTask(taskId)
 
         setTasks(tasksRepository.getTasks())
     }
 
-    function resetFilters() {
-        setFilters({ ...EMPTY_FILTERS })
+    function completeTask(taskId) {
+        const task = tasks.find((task)=> task.id === taskId)
+        tasksRepository.updateTask({...task, status:"D"})
+        setTasks(tasksRepository.getTasks())
+    }
+
+    function cancelTask(taskId) {
+        const task = tasks.find((task)=> task.id === taskId)
+        tasksRepository.updateTask({...task, status:"C"})
+        setTasks(tasksRepository.getTasks())
     }
 
     return (
@@ -77,8 +89,8 @@ export default function TasksList({tasksRepository}) {
 
                     <div className="overflow-x-auto">
                     {filteredTasks.length > 0 ? (
-                        <div className="min-w-[970px]">
-                            <div className="grid min-h-[47px] grid-cols-[minmax(170px,1.55fr)_minmax(95px,0.8fr)_minmax(105px,0.9fr)_minmax(120px,1fr)_minmax(112px,0.95fr)_minmax(112px,0.95fr)_104px] items-center gap-[15px] bg-[#fafbfc] px-[22px] text-[0.71rem] font-semibold text-[#8992a4]">
+                        <div className="min-w-[1030px]">
+                            <div className="grid min-h-[47px] grid-cols-[minmax(170px,1.55fr)_minmax(95px,0.8fr)_minmax(105px,0.9fr)_minmax(120px,1fr)_minmax(112px,0.95fr)_minmax(112px,0.95fr)_164px] items-center gap-[15px] bg-[#fafbfc] px-[22px] text-[0.71rem] font-semibold text-[#8992a4]">
                                 <span>Tarefa</span>
                                 <span>Prioridade</span>
                                 <span>Status</span>
@@ -89,7 +101,7 @@ export default function TasksList({tasksRepository}) {
                             </div>
                             {filteredTasks.map((task) => {
                                 const taskView = TaskMapper.toTaskViewFormat(task)
-                                return <Task task={taskView} onDelete={deleteTask} key={task.id} />
+                                return <Task task={taskView} onComplete={completeTask} onCancel={cancelTask} onDelete={deleteTask} key={task.id} />
                             })}
                         </div>
                     ) : tasks.length > 0 ? (
